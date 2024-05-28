@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createUser } from "../features/slices/userdetails.js";
+import { useNavigate } from "react-router-dom";
 
 const Create = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState(0);
   const [gender, setGender] = useState("");
+  const navigate = useNavigate();
   //const [data,setData] = useState({})
 
   const dispatch = useDispatch();
@@ -15,9 +17,11 @@ const Create = () => {
     e.preventDefault();
     console.log({ name, email, age, gender });
     dispatch(createUser({ name, email, age, gender }));
+    navigate("/read");
   };
   return (
     <div>
+      <h4 className="text-4xl m-5">Fill the data</h4>
       <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
         <div className="mb-5">
           <label
