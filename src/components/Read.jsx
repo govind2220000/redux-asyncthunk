@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 
 const Read = () => {
   const dispatch = useDispatch();
-  const { users, loading } = useSelector((state) => state.app);
+  const { users, loading, searchData } = useSelector((state) => state.app);
   const [showPopup, setShowPopup] = useState(false);
   const [id, setId] = useState();
-  useEffect(() => {
-    dispatch(showUser());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(showUser());
+  // }, []);
 
   if (loading) {
     return <h2>Loading</h2>;
@@ -36,71 +36,84 @@ const Read = () => {
           ></UserDetailsPop>
         )}
       </div>
-      {users.map((user) => {
-        return (
-          <div
-            className={`${
-              showPopup ? "blur-md" : "border-t-2 border-teal-800"
-            }`}
-            key={user.id}
-          >
-            <dl>
-              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Full name</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {user.name}
-                </dd>
+      {users &&
+        users
+          .filter((user) => {
+            if (searchData.length === 0) {
+              return user;
+            } else {
+              return user.name.toLowerCase().includes(searchData.toLowerCase());
+            }
+          })
+          .map((user) => {
+            return (
+              <div
+                className={`${
+                  showPopup ? "blur-md" : "border-t-2 border-teal-800"
+                }`}
+                key={user.id}
+              >
+                <dl>
+                  <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt className="text-sm font-medium text-gray-500">
+                      Full name
+                    </dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      {user.name}
+                    </dd>
+                  </div>
+                  <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt className="text-sm font-medium text-gray-500">
+                      Email address
+                    </dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      {user.email}
+                    </dd>
+                  </div>
+                  <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt className="text-sm font-medium text-gray-500">
+                      Gender
+                    </dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      {user.gender}
+                    </dd>
+                  </div>
+                  <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt className="text-sm font-medium text-gray-500">Age</dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      {user.age}
+                    </dd>
+                  </div>
+                  <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt className="text-sm font-medium text-gray-500">About</dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      Testing the Redux toolkit
+                    </dd>
+                  </div>
+                  <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <a
+                      className="m-2 hover:text-blue-500 cursor-pointer"
+                      onClick={() => [setShowPopup(true), setId(user.id)]}
+                    >
+                      View
+                    </a>
+                    <Link
+                      to={`/edit/${user.id}`}
+                      className="m-2 hover:text-blue-500"
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      onClick={() => dispatch(deleteUser(user.id))}
+                      className="m-2 hover:text-blue-500"
+                    >
+                      Delete
+                    </Link>
+                  </div>
+                </dl>
               </div>
-              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">
-                  Email address
-                </dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {user.email}
-                </dd>
-              </div>
-              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Gender</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {user.gender}
-                </dd>
-              </div>
-              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Age</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {user.age}
-                </dd>
-              </div>
-              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">About</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  Testing the Redux toolkit
-                </dd>
-              </div>
-              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <a
-                  className="m-2 hover:text-blue-500 cursor-pointer"
-                  onClick={() => [setShowPopup(true), setId(user.id)]}
-                >
-                  View
-                </a>
-                <Link
-                  to={`/edit/${user.id}`}
-                  className="m-2 hover:text-blue-500"
-                >
-                  Edit
-                </Link>
-                <Link
-                  onClick={() => dispatch(deleteUser(user.id))}
-                  className="m-2 hover:text-blue-500"
-                >
-                  Delete
-                </Link>
-              </div>
-            </dl>
-          </div>
-        );
-      })}
+            );
+          })}
     </div>
   );
 };

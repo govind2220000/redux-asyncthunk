@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
 
-const initialState = { users: [], loading: false, error: null };
+const initialState = { users: [], loading: false, error: null, searchData: [] };
 
 //createAction
 
@@ -91,7 +91,11 @@ export const deleteUser = createAsyncThunk(
 export const userDetailSlice = createSlice({
   name: "userDetail",
   initialState,
-  reducers: [],
+  reducers: {
+    searchUser: (state, action) => {
+      state.searchData = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createUser.pending, (state) => {
@@ -145,5 +149,7 @@ export const userDetailSlice = createSlice({
       });
   },
 });
+
+export const { searchUser } = userDetailSlice.actions;
 
 export default userDetailSlice.reducer;

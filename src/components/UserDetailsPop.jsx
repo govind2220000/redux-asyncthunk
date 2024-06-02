@@ -7,7 +7,7 @@ const UserDetailsPop = ({ id, users, setShowPopup }) => {
   const currentData = users.filter((user) => user.id === id);
   //console.log(currentData);
   return (
-    <div className="fixed z-40 w-1/3 h-1/3 inset-0 bg-neutral-500 m-auto rounded-lg shadow-2xl md:w-1/4 md:h-1/4">
+    <div className="fixed z-40 w-1/2 h-1/2 inset-0 bg-neutral-500 m-auto rounded-lg shadow-2xl ">
       <button
         onClick={() => setShowPopup(false)}
         className="flex items-center m-auto"
