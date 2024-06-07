@@ -10,7 +10,7 @@ import Update from "./components/Update.jsx";
 
 function App() {
   return (
-    <div>
+    <div className="dark:bg-gray-600">
       <BrowserRouter>
         <Navbar></Navbar>
         <Routes>
